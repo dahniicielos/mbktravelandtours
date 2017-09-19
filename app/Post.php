@@ -8,9 +8,9 @@ class Post extends Model
 {
     protected $guarded = ['id'];
 
-    public function categories()
+    public function category()
     {
-        return $this->belongsToMany('App\Category')->withTimestamps();
+        return $this->belongsTo('App\Category')->withTimestamps();
     }
 
     public function comments()

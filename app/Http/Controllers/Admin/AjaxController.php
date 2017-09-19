@@ -13,6 +13,10 @@ use App\BusInquiry;
 use App\VanRentalInquiry;
 use App\Purchase;
 use App\PurchasedItem;
+use App\Van;
+use App\User;
+use App\RoleUser;
+use App\Subscriber;
 
 
 class AjaxController extends Controller
@@ -581,6 +585,29 @@ class AjaxController extends Controller
         return json_encode($data);
 	}
 
+
+
+	public function get_van_info($id) 
+	{
+		$van = Van::whereId($id)->firstOrFail();
+		$data = [];
+
+		//brand
+		//model
+		//no_of_seats
+		//description
+		//van_image
+		$id = $van->id;
+		$brand = $van->brand;
+		$model = $van->model;
+		$no_of_seats = $van->no_of_seats;
+		$description = $van->description;
+		$van_image = $van->van_image;
+        array_push($data, ['id' => $id, 'brand' => $brand, 'model' => $model, 'no_of_seats' => $no_of_seats, 'description' => $description, 'van_image' => $van_image]);
+        return json_encode($data);
+	}
+
+
 	public function mark_as_processed_van_inquiry($id) {
 		$van_inquiry = VanRentalInquiry::whereId($id)->firstOrFail();
 		$van_inquiry->remark = 2;
@@ -761,6 +788,177 @@ class AjaxController extends Controller
         else {
         	return "error";
         }
+	}
+
+	function get_all_users() {
+		$users = User::orderBy('created_at', 'desc')->get();
+
+		$data["data"] = [];
+
+		foreach ($users as $user) {
+			$id = $user->id;
+			$name = ucwords($user->first_name)." ".ucwords($user->last_name);
+			$email = $user->email;
+			$date_joined = date("F j, Y h:i A", strtotime($user->created_at));
+			$birthday = $user->birthday;
+	        $age = date("Y", strtotime($birthday));
+	        $age = date("Y") - $age;
+	        $birthday_age = $birthday." (".$age.")";
+	        $roles = $user->roles()->get();
+
+	        $membership;
+	        $is_admin = false;
+	        foreach ($roles as $role) {
+	        	if ($role->id == 1) {//admin
+	        		$is_admin = true;
+	        		break;
+	        	}
+	        	else {//member
+	        		$is_admin = false;
+	        		continue;
+	        	}
+	        }
+	        if ($is_admin) {
+	        	$membership = '<center><span class="label label-success">Admin</span></center>';
+	        }
+	        else {
+	        	$membership = '<center><span class="label label-primary">Member</span></center>';
+	        }
+	        array_push($data["data"], ['id' => $id, 'name' => $name, 'email' => $email, 'date_joined' => $date_joined, 'membership' => $membership]);
+		}
+		return json_encode($data);
+	}
+
+	function get_user_info($id) {
+		$user = User::whereId($id)->firstOrFail();
+		$data = [];
+		
+		$id = $user->id;
+
+
+		$profile_picture = '<img src="'.$user->profile_picture.'" style="width: 100%; margin-top: 20px;">';
+
+		$name = ucwords($user->first_name)." ".ucwords($user->last_name);
+		$birthday = $user->birthday;
+        $age = date("Y", strtotime($birthday));
+        $age = date("Y") - $age;
+        $birthday_age = date("F j, Y", strtotime($user->birthday))." (".$age.")";
+        $email = $user->email;
+        $address = ucwords($user->province).", ".ucwords($user->city);
+        $phone_number = $user->phone_number;
+
+        $roles = $user->roles()->get();
+
+        $membership;
+        $is_admin = false;
+        foreach ($roles as $role) {
+        	if ($role->id == 1) {//admin
+        		$is_admin = true;
+        		break;
+        	}
+        	else {//member
+        		$is_admin = false;
+        		continue;
+        	}
+        }
+        if ($is_admin) {
+        	$membership = '<span class="label label-success">Admin</span>';
+        }
+        else {
+        	$membership = '<span class="label label-primary">Member</span>';
+        }
+
+        $date_joined = date("F j, Y h:i A", strtotime($user->created_at));
+
+		array_push($data, ['id' => $id, 'name' => $name, 'birthday_age' => $birthday_age, 'email' => $email, 'address' => $address, 'phone_number' => $phone_number, 'membership' => $membership, 'profile_picture' => $profile_picture, 'date_joined' => $date_joined, 'is_admin' => $is_admin]);
+		
+		return json_encode($data);
+	}
+
+	public function remove_admin_role_from_user($id) {//
+		if (Auth::user()->id == $id) {
+			return "error";
+		}
+		else {
+			$user = User::whereId($id)->firstOrFail();
+			if ($user->hasRole('manager')) {
+				//if it is really an admin
+				$role_user = RoleUser::whereRaw(DB::raw('user_id = '.$id.' and role_id = 1'))->first();
+				if ($role_user = RoleUser::whereRaw(DB::raw('user_id = '.$id.' and role_id = 1'))->delete()) {
+					return "success";
+				}
+				else {
+					return "false";
+				}
+			}
+			else {
+				//if it is not an admin
+				return "error";
+			}
+		}
+	}
+
+	public function add_admin_role_to_user($id) {//
+		if (Auth::user()->id == $id) {
+			return "error";
+		}
+		else {
+			$user = User::whereId($id)->firstOrFail();
+			if ($user->hasRole('manager')) {
+				//if it is already an admin
+				return "error";
+			}
+			else {
+				if ($user->roles()->attach(1) == '') {
+					return "success";
+				}
+				else {
+					return "error";
+				}
+				
+			}
+		}
+	}
+
+	public function delete_user($id) {
+		if (Auth::user()->id == $id) {
+			return "error";
+		}
+		else {
+			$user = User::whereId($id)->firstOrFail();
+			if ($user->delete()) {
+				return "success";
+			}
+			else {
+				return "false";
+			}
+		}
+	}
+
+	public function get_all_subscribers() {
+		$subscribers = Subscriber::orderBy('created_at', 'desc')->get();
+
+		$data["data"] = [];
+
+		foreach ($subscribers as $subscriber) {
+			$id = $subscriber->id;
+			$email = $subscriber->email;
+			$uniqid = $subscriber->uniqid;
+			$unsubscirbe_btn = '<center><btn class="label label-danger" onclick="unsubscirbe_user('.$id.', \''.$email.'\')">Unsubscribe</btn></center>';
+			$date_subscribed = date("F j, Y h:i A", strtotime($subscriber->created_at));
+	        array_push($data["data"], ['id' => $id, 'unsubscirbe_btn' => $unsubscirbe_btn, 'email' => $email, 'uniqid' => $uniqid, 'date_subscribed' => $date_subscribed]);
+		}
+		return json_encode($data);
+	}
+	
+	public function unsubscribe_user($id) {
+		$subscriber = Subscriber::whereId($id)->firstOrFail();
+		if ($subscriber->delete()) {
+			return "success";
+		}
+		else {
+			return "error";
+		}
 	}
 
 }

@@ -30,8 +30,30 @@
 <div id="content" class="bg-light-gray">
     <div class="row">
         <div class="col"><p>VAN PAGE</p></div>
+        <div class="col">
+            <div class="pull-right"><button class="btn btn-primary" onclick="toggleAddVan()">Add Van</button></div>
+        </div>
     </div>
-    
+    <div class="row">
+        @foreach ($vans as $van)
+            <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                <div class="card white card-light">
+                    <img src="{!! url('/') !!}/{!! $van->van_image !!}" style="height:150px">
+                    <div class="body">
+                        <a href="" class="text-blue-dark"><b>{!! $van->brand !!}&nbsp;({!! $van->model !!})<br>{!! $van->no_of_seats !!}-seater</b></a>
+                        <hr>
+                        <p>
+                            
+                            {!! $van->description !!}<br><br>
+                            <button class="btn btn-danger text-uppercase pull-right" onclick="deleteVan({!! $van->id !!})">Delete</button>
+                            <button  class="btn btn-default text-uppercase pull-right" onclick="toggleEditVan({!! $van->id !!})">Edit</button>
+                            
+                        </p>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
     <div class="row">
         <div class="col">
             <div class="card white card-light">
@@ -170,6 +192,64 @@
     </div>
 </div>
 
+<div class="modal fade" id="van-modal" tabindex="-1" role="dialog" aria-labelledby="vanEditLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            {!! Form::open(['id' => 'van-form', 'url' => url('/').'/admin/pages/vans/update', 'role' => 'form', 'data-toggle' => 'validator', 'enctype' => 'multipart/form-data']) !!}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="van-modal-title">Edit Van</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                            <div class="form-group">
+                                {!! Form::text('brand', '', ['class' => 'form-control', 'placeholder' => 'Enter Brand', 'id' => 'modal-brand', 'required' => 'required']) !!}
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                            <div class="form-group">
+                                {!! Form::text('model', '', ['class' => 'form-control', 'placeholder' => 'Enter Model', 'id' => 'modal-model', 'required' => 'required']) !!}
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                            <div class="form-group">
+                                {!! Form::number('no_of_seats', '', ['class' => 'form-control', 'placeholder' => 'Enter No of Seats', 'id' => 'modal-no-of-seats', 'required' => 'required', 'min' => '1']) !!}
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                {!! Form::textarea('description', '', ['class' => 'form-control', 'placeholder' => 'Enter Description', 'id' => 'modal-description', 'required' => 'required']) !!}
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <img id="modal-van-image" style="height:150px">
+                                {!! Form::file('van_image', ['id' => 'van-image', 'required'=>'required']) !!}
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            {!! Form::close() !!}
+        </div>
+    </div>
+</div>
+
 
 
 @endsection
@@ -221,6 +301,74 @@
                 ?>
                 window.location.href = '{!! $link !!}'+id;
             });
+        }
+
+        function deleteVan(id) {
+            swal({
+                title: "Delete Van?",
+                type: "info",
+                html: "Are you sure you want to delete this van?",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                cancelButtonText: "No",
+                confirmButtonText: "Yes"
+            }).then(function() {
+                <?php
+
+                    $link = url('/').'/admin/pages/vans/delete/';
+                ?>
+                window.location.href = '{!! $link !!}'+id;
+            });
+        }
+
+        function toggleEditVan(id) {
+            $('#van-modal-title').html('Edit Van');
+
+            var link = '{!! url("/") !!}'+'/admin/pages/vans/update/';
+            $('#van-form').attr('action', link+id);
+            $('.help-block').html("");
+            $('#van-image').removeAttr("required");
+            $('#modal-van-image').show();
+            $.ajax({
+                url: "{!! url('/') !!}/admin/ajax/van/get-info/"+id,
+                dataType: 'json',
+                delay: 250,
+                data: {
+                    'id': id
+                },
+                success: function (data) {
+                    //alert(data);
+                    //console.log(data);
+                    $('#modal-brand').val(data[0].brand);
+                    $('#modal-model').val(data[0].model);
+                    $('#modal-no-of-seats').val(data[0].no_of_seats);
+                    $('#modal-description').val(data[0].description);
+                    $('#modal-van-image').attr('src', "{!! url('/') !!}"+"/"+data[0].van_image);
+                    
+                    
+                },
+                error: function (jqXHR, exception) {
+                    console.log(exception);
+                },
+                cache: true
+            });
+            $("#van-modal").modal("toggle");
+        }
+
+        function toggleAddVan() {
+            $('#van-modal-title').html('Add Van');
+
+            var link = '{!! url("/") !!}'+'/admin/pages/vans/add';
+            $('#van-form').attr('action', link);
+            $('.help-block').html("");
+            $('#modal-brand').val("");
+            $('#modal-model').val("");
+            $('#modal-no-of-seats').val("");
+            $('#modal-description').val("");
+            $('#modal-van-image').hide();
+            $('#van-image').attr("required", "required");
+            $("#van-modal").modal("toggle");
         }
     </script>
 @endsection

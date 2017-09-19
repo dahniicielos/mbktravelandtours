@@ -3,360 +3,375 @@
 
 <?php $__env->startSection('modified-style'); ?>
 <style type="text/css">
-    #tour-package-form-container{
-        position: absolute;
-        float: left;
-        width: 100%;
-        bottom: 0px;
-    }
-
-    #tour-package-form-card{
-        position: relative;
-        float: left;
-        width: 80%;
-        margin: 0px 10%;
-    }
-
-    #tour-package-form-header{
-        position: absolute;
-        float: left;
-        width: 16%;
-        height: 100%;
-        padding: 0px 20px;
-    }
-
-    #vertical-align{
-        position: absolute;
-        top: 35%;
-    }
-
-    #tour-package-form-body{
-        position: relative;
-        float: left;
-        width: 74%;
-        margin-left: 16%;
-    }
-
-    #tour-package-form-container h4{
-        margin: 0px;
-    }
-
-    #tour-package-form label{
-        font-size: 11px;
-        letter-spacing: 2px;
-    }
-
-    #tour-package-form-footer{
-        position: absolute;
-        float: left;
-        width: 10%;
-        height: 100%;
-        right: 0px;
-        cursor: pointer;
-    }
-
-    #tour-package-form-footer i{
-        position: absolute;
-        left: 40%;
-        top: 40%;
-        font-size: 25px;
-    }
-
-    #tour-packages-container{
-        position: relative;
-        float: left;
-        width: 100%;
-        height: 100vh;
-    }
-
-    .tour-background{
-        position: absolute;
-        float: left;
-        width: 100%;
-        height: 100%;
-        z-index: -99;
-        -webkit-transition: opacity 1s ease-in-out;
-        -moz-transition: opacity 1s ease-in-out;
-        -o-transition: opacity 1s ease-in-out;
-        transition: opacity 1s ease-in-out;
-        opacity:0;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-        filter: alpha(opacity=0);
-    }
-
-    .tour-background.active{
-        opacity: 1;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
-        filter: alpha(opacity=1);
-    }
-
-    #tab-container{
-        position: relative;
-        float: left;
-        width: 100%;
-        margin-top: 100px;
-    }
-
-    .nav-pills > li{
-        width: calc(50% - 1px);
-        text-align: center;
-    }
-
-    .nav-pills > li > a{
-        color: #FFFFFF;
-        transition: all 0.1s ease-in;
-    }
-
-    .nav > li > a:focus, 
-    .nav > li > a:hover{
-        background-color: transparent;
-    }
-
-    .nav-pills > li.active > a, 
-    .nav-pills > li.active > a:focus, 
-    .nav-pills > li.active > a:hover{
-        background-color: transparent;
-        border-bottom: 3px solid #FFFFFF;
-        border-radius: 0px;
-    }
-
-    #swipers{
-        position: absolute;
-        float: left;
-        bottom: 20px;
-        width: 100%;
-    }
-
-    .swiper-container {
-        width: 55%;
-        height: 300px;
-    }  
-
-    .swiper-slide{
-        background-color: #FFFFFF;
-        height: 85%;
-        cursor: pointer;
-    }
-
-    .swiper-fill{
-        position: relative;
-        float: left;
-        width: 100%;
-        height: 100%;
-    }
-
-    .tour-info{
-        position: absolute;
-        float: left;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        bottom: 0px;
-    }
-
-    .tour-info p{
-        margin: 15px;
-    }
-
-    .tour-info .tour-btn{
-        margin: 0px;
-        padding: 10px 15px;
-        font-size: 12px;
-    }
-
-    .tour-info p small{
-        font-size: 11px;
-    }
-
-    .swiper-pagination-bullet-active{
-        background: #FFFFFF;
-    }
-
-    .thumbnail p{
-        font-size: 11px;
-    }
-
-    #promo-container{
-        background: url('assets/images/promo_background.jpg') center no-repeat;
-        background-size: cover;
-        background-attachment: fixed;
-        padding: 0px;
-    }
-
-    #promo-container .fill{
-        padding: 100px 0px 85px 0px;
-    }
-
-    #promo-title{
-        font-size: 50px;
-        margin: 0px 0px 20px 0px;
-    }
-
-    #logo-swiper{
-        width: 100%;
-        height: 125px;
-    }
-
-    #logo-swiper img{
-        height: 100%;
-    }
-
-    #newsletter p{
-        margin: 30px 0px;
-        letter-spacing: 2px;
-        font-size: 15px;
-    }
-
-    #newsletter p i{
-        margin-right: 20px;
-    }
-
-    #newsletter .form-control{
-        height: 55px;
-        margin-top: 12px;
-        padding-left: 20px;
-    }
-
-    .ad_image{
-        content: url('<?php echo url('/'); ?>/assets/images/ads/ad_landscape.jpg');
-    }
-
-    /* small laptop */
-    @media(max-width: 1024px){
-        #tour-package-form-card{
-            width: 95%;
-            margin: 0px 2.5%;
-        }
-    }
-
-    /* tablet */
-    @media (max-width: 768px) and (min-width: 426px){
-        #tour-package-form-card{
-            width: 100%;
-            margin: 0px;
-        }
-
-        #tour-package-form-header{
-            padding: 0px 10px;
-        }
-
-        #tour-package-form-container h4{
-            font-size: 15px;
-        }
-
-        #tour-package-form-header small{
-            font-size: 9px;
-        }
-
-        #tour-package-form-footer i{
-            left: 35%;
-            top: 43%;
-            font-size: 20px;
-        }
-
-        .swiper-container{
-            width: 90%;
-        }
-    }
-
-    /* mobile */
-    @media (max-width: 425px){
         #tour-package-form-container{
-            position: relative;
+            position: absolute;
             float: left;
             width: 100%;
-            margin-top: 160px;
+            bottom: 0px;
         }
 
         #tour-package-form-card{
             position: relative;
             float: left;
-            width: 100%;
-            margin: 0px;
+            width: 80%;
+            margin: 0px 10%;
         }
 
         #tour-package-form-header{
-            position: relative;
+            position: absolute;
             float: left;
-            width: 100%;
-            height: auto;
-            padding: 15px;
+            width: 16%;
+            height: 100%;
+            padding: 0px 20px;
         }
 
         #vertical-align{
-            position: relative;
-            top: 0px;
+            position: absolute;
+            top: 35%;
         }
 
         #tour-package-form-body{
             position: relative;
             float: left;
-            width: 100%;
+            width: 74%;
+            margin-left: 16%;
+        }
+
+        #tour-package-form-container h4{
             margin: 0px;
         }
 
-        #tour-package-form-container .form-group{
-            margin-bottom: 0px;
+        #tour-package-form label{
+            font-size: 11px;
+            letter-spacing: 2px;
         }
 
         #tour-package-form-footer{
-            position: relative;
+            position: absolute;
             float: left;
-            width: 100%;
-            height: auto;
-            padding: 20px 0px;
-            margin-top: 15px;
+            width: 10%;
+            height: 100%;
+            right: 0px;
+            cursor: pointer;
         }
 
         #tour-package-form-footer i{
-            position: relative;
-            left: 0;
-            top: 0;
+            position: absolute;
+            left: 40%;
+            top: 40%;
+            font-size: 25px;
         }
 
-        #tour-package-tab-container{
-            padding: 10px;
+        #tour-packages-container{
+            position: relative;
+            float: left;
+            width: 100%;
+            height: 100vh;
+        }
+
+        .tour-background{
+            position: absolute;
+            float: left;
+            width: 100%;
+            height: 100%;
+            z-index: -99;
+            -webkit-transition: opacity 1s ease-in-out;
+            -moz-transition: opacity 1s ease-in-out;
+            -o-transition: opacity 1s ease-in-out;
+            transition: opacity 1s ease-in-out;
+            opacity:0;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+            filter: alpha(opacity=0);
+        }
+
+        .tour-background.active{
+            opacity: 1;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+            filter: alpha(opacity=1);
+        }
+
+        #tab-container{
+            position: relative;
+            float: left;
+            width: 100%;
+            margin-top: 100px;
         }
 
         .nav-pills > li{
-            width: 49%;
+            width: calc(50% - 1px);
+            text-align: center;
         }
 
-        .swiper-container{
-            width: 95%;
+        .nav-pills > li > a{
+            color: #FFFFFF;
+            transition: all 0.1s ease-in;
+        }
+
+        .nav > li > a:focus,
+        .nav > li > a:hover{
+            background-color: transparent;
+        }
+
+        .nav-pills > li.active > a,
+        .nav-pills > li.active > a:focus,
+        .nav-pills > li.active > a:hover{
+            background-color: transparent;
+            border-bottom: 3px solid #FFFFFF;
+            border-radius: 0px;
+        }
+
+        #swipers{
+            position: absolute;
+            float: left;
+            bottom: 20px;
+            width: 100%;
+        }
+
+        .swiper-container {
+            width: 55%;
+            height: 300px;
+        }
+
+        .swiper-slide{
+            background-color: #FFFFFF;
+            height: 85%;
+            cursor: pointer;
+        }
+
+        .swiper-fill{
+            position: relative;
+            float: left;
+            width: 100%;
+            height: 100%;
+        }
+
+        .tour-info{
+            position: absolute;
+            float: left;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            bottom: 0px;
+        }
+
+        .tour-info p{
+            margin: 15px;
+        }
+
+        .tour-info .tour-btn{
+            margin: 0px;
+            padding: 10px 15px;
+            font-size: 12px;
+        }
+
+        .tour-info p small{
+            font-size: 11px;
+        }
+
+        .swiper-pagination-bullet-active{
+            background: #FFFFFF;
+        }
+
+        .thumbnail p{
+            font-size: 11px;
+        }
+
+        #promo-container{
+            background: url('assets/images/promo_background.jpg') center no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            padding: 0px;
+        }
+
+        #promo-container .fill{
+            padding: 100px 0px 85px 0px;
         }
 
         #promo-title{
-            font-size: 40px;
-            width: 90%;
-            margin: 0 5%;
-            margin-bottom: 20px;
+            font-size: 50px;
+            margin: 0px 0px 20px 0px;
         }
 
-        #promo-desc{
-            width: 90%;
-            margin: 0 5%;
-            font-size: 12px;
+        #logo-swiper{
+            width: 100%;
+            height: 125px;
+        }
+
+        #logo-swiper img{
+            height: 100%;
         }
 
         #newsletter p{
-            font-size: 12px;
-            text-align: center;
-            margin-bottom: 10px;
+            margin: 30px 0px;
+            letter-spacing: 2px;
+            font-size: 15px;
         }
 
-        #newsletter .form-group{
-            margin-bottom: 0px;
+        #newsletter p i{
+            margin-right: 20px;
         }
 
-        #newsletter-btn{
-            text-align: center;
+        #newsletter .form-control{
+            height: 55px;
+            margin-top: 12px;
+            padding-left: 20px;
         }
+
         .ad_image{
-            content: url('<?php echo url('/'); ?>/assets/images/ads/ad_landscape_two.jpg');
+            content: url('<?php echo url('/'); ?>/assets/images/ads/ad_landscape.jpg');
         }
-    }
 
-</style>
+        .empty-tour-package{
+            margin-bottom: 20%;
+        }
+
+        /* small laptop */
+        @media(max-width: 1024px){
+            #tour-package-form-card{
+                width: 95%;
+                margin: 0px 2.5%;
+            }
+        }
+
+        /* tablet */
+        @media (max-width: 768px) and (min-width: 426px){
+            #tour-package-form-card{
+                width: 100%;
+                margin: 0px;
+            }
+
+            #tour-package-form-header{
+                padding: 0px 10px;
+            }
+
+            #tour-package-form-container h4{
+                font-size: 15px;
+            }
+
+            #tour-package-form-header small{
+                font-size: 9px;
+            }
+
+            #tour-package-form-footer i{
+                left: 35%;
+                top: 43%;
+                font-size: 20px;
+            }
+
+            .swiper-container{
+                width: 90%;
+            }
+
+            .empty-tour-package{
+                margin-bottom: 55%;
+            }
+        }
+
+        /* mobile */
+        @media (max-width: 425px){
+            #tour-package-form-container{
+                position: relative;
+                float: left;
+                width: 100%;
+                margin-top: 160px;
+            }
+
+            #tour-package-form-card{
+                position: relative;
+                float: left;
+                width: 100%;
+                margin: 0px;
+            }
+
+            #tour-package-form-header{
+                position: relative;
+                float: left;
+                width: 100%;
+                height: auto;
+                padding: 15px;
+            }
+
+            #vertical-align{
+                position: relative;
+                top: 0px;
+            }
+
+            #tour-package-form-body{
+                position: relative;
+                float: left;
+                width: 100%;
+                margin: 0px;
+            }
+
+            #tour-package-form-container .form-group{
+                margin-bottom: 0px;
+            }
+
+            #tour-package-form-footer{
+                position: relative;
+                float: left;
+                width: 100%;
+                height: auto;
+                padding: 20px 0px;
+                margin-top: 15px;
+            }
+
+            #tour-package-form-footer i{
+                position: relative;
+                left: 0;
+                top: 0;
+            }
+
+            #tour-package-tab-container{
+                padding: 10px;
+            }
+
+            .nav-pills > li{
+                width: 49%;
+            }
+
+            .swiper-container{
+                width: 95%;
+            }
+
+            #promo-title{
+                font-size: 40px;
+                width: 90%;
+                margin: 0 5%;
+                margin-bottom: 20px;
+            }
+
+            #promo-desc{
+                width: 90%;
+                margin: 0 5%;
+                font-size: 12px;
+            }
+
+            #newsletter p{
+                font-size: 12px;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+
+            #newsletter .form-group{
+                margin-bottom: 0px;
+            }
+
+            #newsletter-btn{
+                text-align: center;
+            }
+
+            .ad_image{
+                content: url('<?php echo url('/'); ?>/assets/images/ads/ad_landscape_two.jpg');
+            }
+
+            .empty-tour-package{
+                margin-bottom: 55%;
+                margin-left: 30px;
+                margin-right: 30px;
+            }
+        }
+
+    </style>
 <?php $__env->stopSection(); ?>
 
 <?php $__env->startSection('title', 'MBK Travel and Tours'); ?>
@@ -557,16 +572,12 @@
                 <div id="swipers">
                     <div class="tab-content">
                         <div class="tab-pane active" role="tabpanel" id="international">
-                            <div id="international-swiper" class="swiper-container">
-                                <div class="swiper-wrapper">
-                                    <?php if($international_tour_packages->isEmpty()): ?>
-                                        <center>
-                                            <h4 class="text-white">
-                                                Sorry, there is no available international tour package for now.
-                                            </h4>
-                                        </center>
-                                    <?php else: ?>
-                                        <?php $counter = 1; ?>
+                            <?php if($international_tour_packages->isEmpty()): ?>
+                                <p class="text-center text-white empty-tour-package">Sorry, there's no available international tour package at this moment</p>
+                            <?php else: ?>
+                                <?php $counter = 1; ?>
+                                <div class="swiper-container" id="international-swiper">
+                                    <div class="swiper-wrapper">
                                         <?php $__currentLoopData = $international_tour_packages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $international_tour_package): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <div class="swiper-slide">
                                                 <div class="swiper-fill" style="background: url('<?php echo url('/'); ?>/assets/images/<?php echo $international_tour_package->package_image; ?>') center no-repeat; background-size: cover;" onmouseover="changeBackground('#<?php echo $international_tour_package->slug; ?>')">
@@ -585,24 +596,18 @@
                                             </div>
                                             <?php $counter++; ?>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    <?php endif; ?>
-                                        
+                                    </div>
+                                    <div class="swiper-pagination"></div>
                                 </div>
-                                
-                                <div class="swiper-pagination"></div>
-                            </div>
+                            <?php endif; ?>
                         </div>
                         <div class="tab-pane" role="tabpanel" id="local">
-                            <div id="local-swiper" class="swiper-container">
-                                <div class="swiper-wrapper">
-                                    <?php if($local_tour_packages->isEmpty()): ?>
-                                        <center>
-                                            <h4 class="text-white">
-                                                Sorry, there is no available local tour package for now.
-                                            </h4>
-                                        </center>
-                                    <?php else: ?>
-                                        <?php $counter = 1; ?>
+                            <?php if($local_tour_packages->isEmpty()): ?>
+                                <p class="text-center text-white empty-tour-package">Sorry, there's no available local tour package at this moment</p>
+                            <?php else: ?>
+                                <?php $counter = 1; ?>
+                                <div class="swiper-container" id="local-swiper">
+                                    <div class="swiper-wrapper">
                                         <?php $__currentLoopData = $local_tour_packages; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $local_tour_package): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <div class="swiper-slide">
                                                 <div class="swiper-fill" style="background: url('<?php echo url('/'); ?>/assets/images/<?php echo $local_tour_package->package_image; ?>') center no-repeat; background-size: cover;" onmouseover="changeBackground('#<?php echo $local_tour_package->slug; ?>')">
@@ -621,12 +626,10 @@
                                             </div>
                                             <?php $counter++; ?>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                    <?php endif; ?>
-                                        
+                                    </div>
+                                    <div class="swiper-pagination"></div>
                                 </div>
-                                
-                                <div class="swiper-pagination"></div>
-                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>

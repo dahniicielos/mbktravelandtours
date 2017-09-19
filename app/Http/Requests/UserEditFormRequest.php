@@ -31,7 +31,7 @@ class UserEditFormRequest extends FormRequest
             'city' => '',
             'province' => '',
             'birthday' => 'date',
-            'profile_pictre' => 'image|mimes:jpeg,bmp,png|size:2000',
+            'profile_pictre' => 'image|mimes:jpeg,bmp,png|max:2000',
             
         ];
         //

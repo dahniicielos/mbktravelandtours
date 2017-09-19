@@ -114,6 +114,8 @@ Route::group(array('prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 
     Route::get('/testimonials/delete/{id?}', 'TestimonialsController@delete');
 
 
+    //============ PAGES =============//
+
     Route::get('/pages/home', 'PagesController@home_page');
     Route::post('/pages/home/update-about', 'PagesController@update_about');
     Route::post('/pages/home/update-mission', 'PagesController@update_mission');
@@ -125,6 +127,10 @@ Route::group(array('prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 
     Route::get('/pages/bus', 'PagesController@bus_page');
     Route::get('/pages/hotel', 'PagesController@hotel_page');
     Route::get('/pages/van', 'PagesController@van_page');
+    Route::get('/ajax/van/get-info/{id?}', 'AjaxController@get_van_info');
+    Route::post('/pages/vans/add', 'VanController@add_van');
+    Route::post('/pages/vans/update/{id?}', 'VanController@update_van');
+    Route::get('/pages/vans/delete/{id?}', 'VanController@delete_van');
 
     Route::post('/pages/steps/update/{id?}', 'PagesController@update_step');
 
@@ -137,6 +143,27 @@ Route::group(array('prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 
     Route::get('/pages/work-with-us', 'PagesController@work_with_us_page');
 
     Route::post('/pages/update-sub/{id?}', 'PagesController@update_sub');
+
+
+    Route::get('/settings', 'PagesController@settings');
+    Route::post('/settings', 'PagesController@update_settings');
+
+
+    //============ BLOG POSTS =============//
+
+    Route::get('/blogs', 'PagesController@blog');
+    Route::get('/blogs/new', 'PagesController@add_new_blog');
+    Route::post('/blogs/new', 'PagesController@save_new_blog');
+
+    Route::get('/ajax/users/get-all', 'AjaxController@get_all_users');
+    Route::get('/ajax/users/get-info/{id?}', 'AjaxController@get_user_info');
+    Route::get('/ajax/users/remove-admin-role/{id?}', 'AjaxController@remove_admin_role_from_user');
+    Route::get('/ajax/users/add-admin-role/{id?}', 'AjaxController@add_admin_role_to_user');
+    Route::get('/ajax/users/delete/{id?}', 'AjaxController@delete_user');
+
+    Route::get('/newsletter', 'PagesController@newsletter');
+    Route::get('/ajax/newsletter/get-all', 'AjaxController@get_all_subscribers');
+    Route::get('/ajax/newsletter/unsubscribe/{id?}', 'AjaxController@unsubscribe_user');
 
 });
 Route::middleware(['member'])->group(function () {

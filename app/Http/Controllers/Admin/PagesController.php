@@ -16,6 +16,11 @@ use App\Faq;
 use App\Http\Requests\StepFormRequest;
 use App\Sub;
 use App\Http\Requests\SubFormRequest;
+use App\Post;
+use App\Category;
+use App\Http\Requests\BlogFormRequest;
+use App\Van;
+use App\Http\Requests\SettingsFormRequest;
 
 
 
@@ -151,9 +156,10 @@ class PagesController extends Controller
 
     public function van_page()
     {
+        $vans = Van::all();
         $steps = Step::where('step_type', 5)->get();
         $faqs = Faq::where('faq_type', 5)->get();
-        return view('admin.pages.van', compact('steps', 'faqs'));
+        return view('admin.pages.van', compact('steps', 'faqs', 'vans'));
     }
 
     public function update_step($id, StepFormRequest $request)
@@ -232,7 +238,62 @@ class PagesController extends Controller
             return redirect('admin/pages/work-with-us')->with('status', 'Work with us page has been successfully updated.');
         }
     }
+
+
+    public function settings()
+    {
+        $homepage = Homepage::firstOrFail();
+        return view('admin.settings', compact('homepage'));
+    }
+
+    public function update_settings(SettingsFormRequest $request)
+    {
+        $homepage = Homepage::firstOrFail();
+        $homepage->email_address = $request->get('email_address');
+        $homepage->address = $request->get('address');
+        $homepage->phone_number = $request->get('phone_number');
+        $homepage->tax = $request->get('tax');
+        $homepage->save();
+        return redirect('admin/settings')->with('status', 'Information successfully updated');
+    }    
     
+    public function blog()
+    {
+        $posts = Post::select('posts.id', 'posts.title', 'posts.content', 'posts.slug', 'posts.status', 'posts.author', 'posts.meta_description', 'posts.meta_keys', 'posts.date_published', 'posts.featured_img', 'posts.category_id', 'm.src')->leftJoin('medias as m', 'posts.featured_img', '=', 'm.id')->orderBy('posts.date_published')->get();
+        $categories = Category::all();
+        //if category == 0 : category == "others"
+        return view('admin.blogs', compact('posts', 'categories'));
+    }
+
+    public function add_new_blog()
+    {
+        $categories = Category::pluck('name', 'id');
+        $categories[0] = "Others";
+        return view('admin.new_blog', compact('categories'));
+    }
+
+    public function save_new_blog(BlogFormRequest $request)
+    {
+        $title = $request->get('post-title');
+        $content = $request->get('content');
+        $slug = $request->get('slug');
+        $category_id = $request->get('category');
+        $meta_description = $request->get('meta_description');
+        $meta_keys = $request->get('meta_keys');
+        $featured_img = $request->featured_img;
+        echo $title."<br>";
+        echo $content."<br>";
+        echo $slug."<br>";
+        echo $category_id."<br>";
+        echo $meta_description."<br>";
+        echo $meta_keys."<br>";
+        print_r($featured_img);
+    }
+
+
+    public function newsletter() {
+        return view('admin.newsletter');
+    }
 
 
 }

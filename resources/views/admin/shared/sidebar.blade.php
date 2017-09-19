@@ -23,6 +23,10 @@
     </div>
 
     <ul class="list-unstyled components">
+        <li><a href="{!! url('/') !!}">
+            <i class="fa fa-globe"></i> Website
+            </a>
+        </li>
         <li class="
             <?php $this_url = url('/').'/admin/dashboard'; ?>
             @if(Request::url() === $this_url)
@@ -59,8 +63,14 @@
         <li>
             <a href="{!! url('/') !!}/admin/tour-packages"><i class="fa fa-map"></i> Tour Packages</a>
         </li>
-        <li>
-            <a href="{!! url('/') !!}/admin/blogs"><i class="fa fa-pencil"></i> Blogs</a>
+        <li class="
+            <?php $this_url = url('/').'/admin/blogs'; ?>
+            @if(Request::url() === $this_url)
+                active"><a style="cursor:default">
+            @else
+                "><a href="{!! url('/') !!}/admin/blogs">
+            @endif 
+            <i class="fa fa-pencil"></i> Blogs</a>
         </li>
         <li class="
             <?php $this_url = url('/').'/admin/faqs'; ?>
@@ -91,6 +101,37 @@
                 @endif
             </a>
         </li>
+        <li class="
+            <?php $this_url = url('/').'/admin/users'; ?>
+            @if(Request::url() === $this_url)
+                active"><a style="cursor:default">
+            @else
+                "><a href="{!! url('/') !!}/admin/users">
+            @endif
+            <i class="fa fa-users"></i> Users 
+            </a>
+        </li>
+        <li class="
+            <?php $this_url = url('/').'/admin/newsletter'; ?>
+            @if(Request::url() === $this_url)
+                active"><a style="cursor:default">
+            @else
+                "><a href="{!! url('/') !!}/admin/newsletter">
+            @endif
+            <i class="fa fa-envelope-o"></i> Newsletter 
+            </a>
+        </li>
+        <li class="
+            <?php $this_url = url('/').'/admin/settings'; ?>
+            @if(Request::url() === $this_url)
+                active"><a style="cursor:default">
+            @else
+                "><a href="{!! url('/') !!}/admin/settings">
+            @endif
+            <i class="fa fa-cog"></i> Settings 
+            </a>
+        </li>
+        
         <li>
             <a href="#pages" data-toggle="collapse" aria-expanded="false"><i class="fa fa-file"></i> Pages</a>
             <?php 

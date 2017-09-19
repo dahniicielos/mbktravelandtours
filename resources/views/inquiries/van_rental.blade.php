@@ -262,7 +262,7 @@
 													@endif
 												@endif
 												>
-												<label class="van-cc van_{!! $van->id !!}" for="van_{!! $van->id !!}" style="background: url('{!! url('/') !!}/assets/images/{!! $van->van_image !!}') center no-repeat; background-size: cover;"></label>
+												<label class="van-cc van_{!! $van->id !!}" for="van_{!! $van->id !!}" style="background: url('{!! url('/') !!}/{!! $van->van_image !!}') center no-repeat; background-size: cover;"></label>
 												<p class="van-desc">
 												{!! $van->description !!}<br>
 												<b>No. of Seats: {!! $van->no_of_seats !!}</b>
