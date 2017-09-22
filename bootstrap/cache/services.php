@@ -30,6 +30,7 @@
     26 => 'App\\Providers\\EventServiceProvider',
     27 => 'App\\Providers\\RouteServiceProvider',
     28 => 'Zizaco\\Entrust\\EntrustServiceProvider',
+    29 => 'Intervention\\Image\\ImageServiceProvider',
   ),
   'eager' => 
   array (
@@ -48,6 +49,7 @@
     12 => 'App\\Providers\\EventServiceProvider',
     13 => 'App\\Providers\\RouteServiceProvider',
     14 => 'Zizaco\\Entrust\\EntrustServiceProvider',
+    15 => 'Intervention\\Image\\ImageServiceProvider',
   ),
   'deferred' => 
   array (

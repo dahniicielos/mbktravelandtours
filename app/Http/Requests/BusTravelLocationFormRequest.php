@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BlogFormRequest extends FormRequest
+class BusTravelLocationFormRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,7 @@ class BlogFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required',
-            'slug' => 'required|unique:posts,slug',
-            'category' => 'required',
-            'content' => 'required',
-            'meta_description' => 'required',
-            'meta_keys' => 'required',
-            'featured_img' => 'required'
+            'location_name' => 'required',
         ];
     }
 }

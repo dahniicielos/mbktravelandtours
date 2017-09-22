@@ -21,6 +21,13 @@ use App\Category;
 use App\Http\Requests\BlogFormRequest;
 use App\Van;
 use App\Http\Requests\SettingsFormRequest;
+use App\Http\Requests\BusTravelLocationFormRequest;
+use App\BusTravelLocation;
+use App\DropOffPoint;
+use App\Http\Requests\RouteFormRequest;
+use App\Http\Requests\DropOffFormRequest;
+use App\Http\Requests\EditRouteFormRequest;
+
 
 
 
@@ -144,7 +151,8 @@ class PagesController extends Controller
     {
         $steps = Step::where('step_type', 4)->get();
         $faqs = Faq::where('faq_type', 4)->get();
-        return view('admin.pages.bus', compact('steps', 'faqs'));
+        $locations = BusTravelLocation::pluck('location_name', 'id');
+        return view('admin.pages.bus', compact('steps', 'faqs', 'locations'));
     }
 
     public function hotel_page()
@@ -257,43 +265,100 @@ class PagesController extends Controller
         return redirect('admin/settings')->with('status', 'Information successfully updated');
     }    
     
-    public function blog()
-    {
-        $posts = Post::select('posts.id', 'posts.title', 'posts.content', 'posts.slug', 'posts.status', 'posts.author', 'posts.meta_description', 'posts.meta_keys', 'posts.date_published', 'posts.featured_img', 'posts.category_id', 'm.src')->leftJoin('medias as m', 'posts.featured_img', '=', 'm.id')->orderBy('posts.date_published')->get();
-        $categories = Category::all();
-        //if category == 0 : category == "others"
-        return view('admin.blogs', compact('posts', 'categories'));
-    }
-
-    public function add_new_blog()
-    {
-        $categories = Category::pluck('name', 'id');
-        $categories[0] = "Others";
-        return view('admin.new_blog', compact('categories'));
-    }
-
-    public function save_new_blog(BlogFormRequest $request)
-    {
-        $title = $request->get('post-title');
-        $content = $request->get('content');
-        $slug = $request->get('slug');
-        $category_id = $request->get('category');
-        $meta_description = $request->get('meta_description');
-        $meta_keys = $request->get('meta_keys');
-        $featured_img = $request->featured_img;
-        echo $title."<br>";
-        echo $content."<br>";
-        echo $slug."<br>";
-        echo $category_id."<br>";
-        echo $meta_description."<br>";
-        echo $meta_keys."<br>";
-        print_r($featured_img);
-    }
+    
 
 
     public function newsletter() {
         return view('admin.newsletter');
     }
 
+
+    public function new_bus_travel_location(BusTravelLocationFormRequest $request) {
+        $bus_travel_location = new BusTravelLocation(array(
+            'location_name' => $request->get('location_name'),
+        ));
+
+        $bus_travel_location->save();
+        return redirect('/admin/pages/bus')->with('status', $request->location_name.' has been successfully added. You can see it in the drop down of the location field whenever you try to manage a route.');
+    }
+
+    public function new_route(RouteFormRequest $request) {
+        $location = BusTravelLocation::whereId($request->get('drop_off_point'))->firstOrFail();
+        //echo $location->location_name
+        $route = new DropOffPoint(array(
+            'origin' => $request->get('origin'),
+            'destination' => $request->get('destination'),
+            'drop_off_point' => $request->get('drop_off_point'),
+            'drop_off_point_name' => $location->location_name
+        ));
+        $route->save();
+        return redirect('/admin/pages/bus')->with('status', 'Route has been successfully added. You can add more drop off points if you click on the row of the route that you have created.');
+    }
+
+    public function delete_drop_off_point($id) {
+
+        $drop_off_point = DropOffPoint::whereId($id)->firstOrFail();
+        $is_there = DropOffPoint::whereRaw(DB::raw('origin = '.$drop_off_point->origin.' and  destination = '.$drop_off_point->destination))->get();
+        if (count($is_there) > 1) {
+            $drop_off_point->delete();
+            return redirect('/admin/pages/bus')->with('status', 'Drop Off Point Has been successfully deleted.');
+        }
+        else {
+            return redirect('/admin/pages/bus')->with('error', 'There should be at least 1 drop off point.');
+        }
+    }
+
+    public function new_drop_off_point(DropOffFormRequest $request) {
+        $location = BusTravelLocation::whereId($request->get('drop_off_point_id'))->firstOrFail();
+        //echo $location->location_name
+        $is_there = DropOffPoint::whereRaw(DB::raw('origin = '.$request->get('origin_id').' and  destination = '.$request->get('destination_id').' and drop_off_point = '.$request->get('drop_off_point_id')))->get();
+        //return count($is_there);
+        if (count($is_there) > 0) {
+            return redirect('/admin/pages/bus')->with('error', 'Drop off point is already there.');
+        }
+        else {
+            $route = new DropOffPoint(array(
+                'origin' => $request->get('origin_id'),
+                'destination' => $request->get('destination_id'),
+                'drop_off_point' => $request->get('drop_off_point_id'),
+                'drop_off_point_name' => $location->location_name
+            ));
+            $route->save();
+            return redirect('/admin/pages/bus')->with('status', 'Drop off point has been successfully added.');
+        }
+        
+    }
+
+    public function delete_route($o, $d) {
+        $routes = DropOffPoint::whereRaw(DB::raw('origin = '.$o.' and  destination = '.$d))->get();
+        foreach ($routes as $route) {
+            $route->delete();
+        }
+        return redirect('admin/pages/bus')->with('status', 'Route has been successfully deleted');
+    }
+
+    public function edit_route($o, $d, EditRouteFormRequest $request) {
+        $routes = DB::table('drop_off_points')->whereRaw(DB::raw('origin = '.$o.' and  destination = '.$d))->update(['origin' => $request->get('origin'), 'destination' => $request->get('destination')]);
+        //return 'origin: '.$request->get('origin').'<br> destination: '.$request->get('destination');
+        //foreach ($routes as $route) {
+            // $routes->origin = $request->get('origin');
+            // $routes->destination = $request->get('destination');
+            //$routes
+        //}
+        return redirect('admin/pages/bus')->with('status', 'Route has been successfully updated');
+    }
+
+    public function edit_bus_travel_location($id, BusTravelLocationFormRequest $request) {
+        $location = BusTravelLocation::whereId($id)->firstOrFail();
+        $location->location_name = $request->location_name;
+        $location->save();
+        return redirect('admin/pages/bus')->with('status', 'Location has been successfully updated');
+    }
+
+    public function delete_bus_travel_location($id) {
+        $location = BusTravelLocation::whereId($id)->firstOrFail();
+        $location->delete();
+        return redirect('admin/pages/bus')->with('status', 'Location has been successfully deleted');
+    }
 
 }

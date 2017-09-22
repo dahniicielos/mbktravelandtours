@@ -12,4 +12,9 @@ class BusTravelLocation extends Model
     {
         return $this->belongsTo('App\BusInquiry');
     }
+
+    public function drop_off_point()
+    {
+    	return $this->belongsToMany('App\DropOffPoint');
+    }
 }

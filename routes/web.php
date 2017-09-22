@@ -124,7 +124,20 @@ Route::group(array('prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 
 
     Route::get('/pages/flight', 'PagesController@flight_page');
     Route::get('/pages/custom-tour', 'PagesController@custom_tour_page');
+
+
     Route::get('/pages/bus', 'PagesController@bus_page');
+    Route::get('/ajax/bus/routes/get-all', 'AjaxController@get_all_routes');
+    Route::get('/ajax/bus/routes/get-info/{o?}/{d?}', 'AjaxController@get_route_info');
+    Route::get('/ajax/bus/location/get-info/{id?}', 'AjaxController@get_location_info');
+
+    Route::post('/bus-travel-locations/new', 'PagesController@new_bus_travel_location');
+    Route::post('/bus-travel-locations/edit/{id?}', 'PagesController@edit_bus_travel_location');
+    Route::get('/bus-travel-locations/delete/{id?}', 'PagesController@delete_bus_travel_location');
+    Route::post('/routes/new', 'PagesController@new_route');
+    Route::post('/routes/edit/{o?}/{d?}', 'PagesController@edit_route');
+    Route::post('/bus/new-drop-off-point', 'PagesController@new_drop_off_point');
+
     Route::get('/pages/hotel', 'PagesController@hotel_page');
     Route::get('/pages/van', 'PagesController@van_page');
     Route::get('/ajax/van/get-info/{id?}', 'AjaxController@get_van_info');
@@ -151,9 +164,15 @@ Route::group(array('prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 
 
     //============ BLOG POSTS =============//
 
-    Route::get('/blogs', 'PagesController@blog');
-    Route::get('/blogs/new', 'PagesController@add_new_blog');
-    Route::post('/blogs/new', 'PagesController@save_new_blog');
+    Route::get('/blogs', 'BlogController@index');
+    Route::get('/blogs/new', 'BlogController@add_new_post');
+    Route::get('/blogs/edit/{id?}', 'BlogController@edit_post');
+    Route::get('/blogs/delete/{id?}', 'BlogController@delete_post');
+
+    Route::post('/blogs/new', 'BlogController@save_new_post');
+    Route::post('/blogs/edit/{id?}', 'BlogController@update_post');
+
+    //============ USERS =============//
 
     Route::get('/ajax/users/get-all', 'AjaxController@get_all_users');
     Route::get('/ajax/users/get-info/{id?}', 'AjaxController@get_user_info');
@@ -161,9 +180,18 @@ Route::group(array('prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 
     Route::get('/ajax/users/add-admin-role/{id?}', 'AjaxController@add_admin_role_to_user');
     Route::get('/ajax/users/delete/{id?}', 'AjaxController@delete_user');
 
+    //============ NEWSLETTER =============//
+
     Route::get('/newsletter', 'PagesController@newsletter');
     Route::get('/ajax/newsletter/get-all', 'AjaxController@get_all_subscribers');
     Route::get('/ajax/newsletter/unsubscribe/{id?}', 'AjaxController@unsubscribe_user');
+
+
+    
+
+
+    Route::get('/bus/drop-off-point/delete/{id?}', 'PagesController@delete_drop_off_point');
+    Route::get('/bus/routes/delete/{o?}/{d?}', 'PagesController@delete_route');
 
 });
 Route::middleware(['member'])->group(function () {

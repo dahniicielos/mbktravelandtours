@@ -104,7 +104,6 @@
                 <div class="modal-body">
                     <div class="row">
                         <div class="col">
-                            <h6 class="text-blue-dark">User Information</h6>
                             <table>
                                 <tr>
                                     <td><b><span id="user-modal-profile-picture"></span></b></td>

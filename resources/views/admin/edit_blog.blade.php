@@ -1,6 +1,6 @@
 @extends('admin.master')
 
-@section('title', 'ADMIN - Add a new Blog')
+@section('title', 'ADMIN - Edit Blog')
 
 @section('modified-style')
     <style type="text/css">
@@ -114,7 +114,7 @@
                 -->
                 <div class="col">
                     <div class="card white card-light">
-                        {!! Form::open(['id' => 'new-blog', 'data-toggle' => 'validator', 'role' => 'form', 'files' => 'true']) !!}
+                        {!! Form::open(['id' => 'edit-blog', 'data-toggle' => 'validator', 'role' => 'form', 'files' => 'true']) !!}
                         <div class="head">
                             <h6 class="text-blue-dark" id="title">Write A New Blog</h6>
                             <hr>
@@ -126,7 +126,7 @@
                                         {!! Form::label('title', 'TITLE', ['class' => 'form-label']) !!}
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                                                {!! Form::text('title', '',['class' => 'form-control', 'id' => 'post-title', 'required' => 'required', 'placeholder' => 'Enter Title here']) !!}
+                                                {!! Form::text('title', $post->title,['class' => 'form-control', 'id' => 'post-title', 'required' => 'required', 'placeholder' => 'Enter Title here']) !!}
                                             </div>
                                         </div>
                                         <div class="help-block with-errors"></div>
@@ -141,7 +141,7 @@
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
                                                 <div class="input-group">
                                                 <div class="input-group-addon"><small>{!! url('/') !!}/blog/</small></div>
-                                                {!! Form::text('slug', '',['class' => 'form-control', 'id' => 'slug', 'required' => 'required']) !!}
+                                                {!! Form::text('slug', $post->slug,['class' => 'form-control', 'id' => 'slug', 'required' => 'required']) !!}
                                             </div>
                                             </div>
                                         </div>
@@ -153,7 +153,7 @@
                                         {!! Form::label('category', 'CATEGORY', ['class' => 'form-label']) !!}
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                                                {!! Form::select('category', $categories, null, ['class' => 'form-control', 'id' => 'category', 'required' => 'required']) !!}
+                                                {!! Form::select('category', $categories, $post->category_id, ['class' => 'form-control', 'id' => 'category', 'required' => 'required']) !!}
                                             </div>
                                         </div>
                                         <div class="help-block with-errors"></div>
@@ -162,7 +162,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                    <textarea id="summernote" name="content"></textarea>
+                                    <textarea id="summernote" name="content">{!! $post->content !!}</textarea>
                                 </div>
                             </div>
                             <br>
@@ -172,7 +172,7 @@
                                         {!! Form::label('meta_description', 'META DESCRIPTION', ['class' => 'form-label']) !!} <br><i><small>This is what can be seen in the search engine search results, so in order for the searcher to click on your link, you should put a click-bait or something related. <b class="text-blue">Maximum of 160 characters.</b class="text-blue"></small></i>
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                                                {!! Form::textarea('meta_description', '',['class' => 'form-control', 'id' => 'meta_description', 'required' => 'required', 'maxlength' => 160]) !!}
+                                                {!! Form::textarea('meta_description', $post->meta_description,['class' => 'form-control', 'id' => 'meta_description', 'required' => 'required', 'maxlength' => 160]) !!}
                                             </div>
                                         </div>
                                         <div class="help-block with-errors"></div>
@@ -183,7 +183,7 @@
                                         {!! Form::label('meta_keys', 'META KEYS', ['class' => 'form-label']) !!} <br><i><small>This is where google is basing their primary search, if it matches the searcher's keyword to your page's meta keys. <b class="text-blue">Keywords should be separated by commas.</b class="text-blue"></small></i>
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                                                {!! Form::textarea('meta_keys', '', ['class' => 'form-control', 'id' => 'meta_keys', 'required' => 'required']) !!}
+                                                {!! Form::textarea('meta_keys', $post->meta_keys, ['class' => 'form-control', 'id' => 'meta_keys', 'required' => 'required']) !!}
                                             </div>
                                         </div>
                                         <div class="help-block with-errors"></div>
@@ -198,9 +198,10 @@
                                         <br>
                                         <b class="text-blue">The accepted file types are images with a maximum of 
                                         {!! formatBytes(parse_size(file_upload_max_size()), 0) !!} in file size;</b>
+                                        <img src="{!! $media->src !!}">
                                         <div class="row">
                                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-padding">
-                                                {!! Form::file('featured_img', ['required' => 'required']) !!}
+                                                {!! Form::file('featured_img') !!}
                                             </div>
                                         </div>
                                         <div class="help-block with-errors"></div>

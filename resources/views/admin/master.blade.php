@@ -96,6 +96,12 @@
                 type: "success",
                 html: "<div class=\"swal-success-status\">{{ session('status') }}</div>"
             });
+        @elseif (session('error'))
+            swal({
+                title: "Error!",
+                type: "error",
+                html: "<div class=\"swal-error-status\">{{ session('error') }}</div>"
+            });
         @endif
     }
     

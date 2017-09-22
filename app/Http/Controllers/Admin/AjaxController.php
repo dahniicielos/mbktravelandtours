@@ -17,6 +17,8 @@ use App\Van;
 use App\User;
 use App\RoleUser;
 use App\Subscriber;
+use App\BusTravelLocation;
+use App\DropOffPoint;
 
 
 class AjaxController extends Controller
@@ -944,7 +946,7 @@ class AjaxController extends Controller
 			$id = $subscriber->id;
 			$email = $subscriber->email;
 			$uniqid = $subscriber->uniqid;
-			$unsubscirbe_btn = '<center><btn class="label label-danger" onclick="unsubscirbe_user('.$id.', \''.$email.'\')">Unsubscribe</btn></center>';
+			$unsubscirbe_btn = '<center><button class="btn btn-danger" onclick="unsubscirbe_user('.$id.', \''.$email.'\')">Unsubscribe</button></center>';
 			$date_subscribed = date("F j, Y h:i A", strtotime($subscriber->created_at));
 	        array_push($data["data"], ['id' => $id, 'unsubscirbe_btn' => $unsubscirbe_btn, 'email' => $email, 'uniqid' => $uniqid, 'date_subscribed' => $date_subscribed]);
 		}
@@ -960,5 +962,68 @@ class AjaxController extends Controller
 			return "error";
 		}
 	}
+
+
+	public function get_all_routes() {
+		$drop_off_points = DropOffPoint::select(DB::raw('DISTINCT drop_off_points.origin as origin_id, drop_off_points.destination as destination_id, o.location_name as origin, d.location_name as destination'))
+		->leftJoin('bus_travel_locations as o', 'drop_off_points.origin', '=', 'o.id')
+		->leftJoin('bus_travel_locations as d', 'drop_off_points.destination', '=', 'd.id')
+		->get();
+		//return $drop_off_points;
+		$data["data"] = [];
+
+		foreach ($drop_off_points as $dop) {
+			$origin = $dop->origin;
+			$destination = $dop->destination;
+			$origin_id = $dop->origin_id;
+			$destination_id = $dop->destination_id;
+	        array_push($data["data"], ['origin' => $origin, 'destination' => $destination, 'origin_id' => $origin_id, 'destination_id' => $destination_id]);
+		}
+		return json_encode($data);
+	}
+
+	public function get_route_info($o, $d) {
+		$drop_off_points = DropOffPoint::select(DB::raw('DISTINCT drop_off_points.origin as origin_id, drop_off_points.destination as destination_id, o.location_name as origin, d.location_name as destination, drop_off_points.drop_off_point_name, drop_off_points.id'))
+		->leftJoin('bus_travel_locations as o', 'drop_off_points.origin', '=', 'o.id')
+		->leftJoin('bus_travel_locations as d', 'drop_off_points.destination', '=', 'd.id')
+		->whereRaw(DB::raw('drop_off_points.origin = '.$o.' and drop_off_points.destination = '.$d))
+		->get();
+		$data = [];
+		$origin_name;
+		$destination_name;
+		$drop_off_points_names = "";
+		$counter = 0;
+		foreach ($drop_off_points as $dop) {
+			$origin_name = $dop->origin.'&nbsp;<a href="#" class="text-blue" onclick="toggleEditLocation('.$dop->origin_id.')">Edit Location</a>';
+			$destination_name = $dop->destination.'&nbsp;<a href="#" class="text-blue" onclick="toggleEditLocation('.$dop->destination_id.')">Edit Location</a>';
+			if ($counter > 0) {
+				$drop_off_points_names .= ", ".$dop->drop_off_point_name.'&nbsp;';
+				if (count($drop_off_points) > 1) {
+					$drop_off_points_names .= '<a onclick="removeDropOffPoint('.$dop->id.')"><i class="fa fa-minus-circle" style="color:red"></i></a>';
+				}
+				
+			}
+			else {
+				$drop_off_points_names .= $dop->drop_off_point_name.'&nbsp;';
+				if (count($drop_off_points) > 1) {
+					$drop_off_points_names .= '<a onclick="removeDropOffPoint('.$dop->id.')"><i class="fa fa-minus-circle" style="color:red"></i></a>';
+				}
+				
+			}
+			$counter++;
+		}
+
+		array_push($data, ['origin_name' => $origin_name, 'destination_name' => $destination_name, 'drop_off_points_names' => $drop_off_points_names, 'o' => $o, 'd' => $d]);
+		return json_encode($data);
+	}
+
+	public function get_location_info($id) {
+		$location = BusTravelLocation::whereId($id)->firstOrFail();
+		$data = [];
+		$location_name = $location->location_name;
+		array_push($data, ['location_name' => $location_name, 'id' => $id]);
+		return json_encode($data);
+	}
+
 
 }

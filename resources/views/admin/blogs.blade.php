@@ -202,5 +202,23 @@
 
 @section('modified-script')
     <script type="text/javascript">
+        function deletePost(id) {
+            swal({
+                title: "Delete Post?",
+                type: "info",
+                html: "Are you sure you want to delete this post?",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                cancelButtonText: "No",
+                confirmButtonText: "Yes"
+            }).then(function() {
+                <?php
+
+                    $link = url('/').'/admin/blogs/delete/';
+                ?>
+                window.location.href = '{!! $link !!}'+id;
+            });
+        }
     </script>
 @endsection
